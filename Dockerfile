@@ -1,14 +1,4 @@
-sFROM nampdn/node-alpine-git:11 as base
-
-RUN mkdir /app
-
-WORKDIR /app
-
-COPY package.json yarn.lock  ./
-
-RUN echo "Done"
-
-RUN yarn install --frozen-lockfile
+FROM nampdn/node-alpine-git:11 as base
 
 RUN apk add --no-cache wget tar
 
@@ -18,3 +8,5 @@ RUN export PANDOC_VERSION=2.7.2 \
    && tar -xvzf pandoc-${PANDOC_VERSION}-linux.tar.gz \
    && mv ./pandoc-${PANDOC_VERSION}/bin/* /usr/bin \
    && rm -rf ./pandoc-${PANDOC_VERSION} pandoc-${PANDOC_VERSION}-linux.tar.gz
+
+RUN apk del wget tar && rm -vrf /var/cache/apk/*
